@@ -1,5 +1,5 @@
 
-# Actividad 5.2 Ejercicio de programación 2 y análisis estático
+# Actividad 6.2 Ejercicio de programación 3 y pruebas de unidad
 
 ## Objetivos
 * Explicar los fundamentos del desarrollo de pruebas unitarias 
@@ -12,8 +12,8 @@
 * **Nombre:** Cesar Camilo.
 * **Materia:** Pruebas de software y aseguramiento de la calidad.
 * **Profesor:** Dr. Gerardo Padilla Zárate.
-* **Fecha:** 13 de febrero 2026.
-* **Actividad** 5.2 Ejercicio de programación 2 y análisis estático.
+* **Fecha:** 20 de febrero 2026.
+* **Actividad** 6.2 Ejercicio de programación 3 y pruebas de unidad
 ---
 
 ## Caracteristicas
