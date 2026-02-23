@@ -1,4 +1,4 @@
-"""Las reservaciones para el sistema."""
+"""Manejo de reservaciones del sistema."""
 
 import json
 import os
@@ -8,7 +8,7 @@ RESERVATIONS_FILE = "reservations.json"
 
 
 def load_reservations():
-    """Cargar reservaciones desde archivo JSON."""
+    """Lee las reservaciones guardadas en el archivo."""
     if not os.path.exists(RESERVATIONS_FILE):
         return {}
     try:
@@ -20,7 +20,7 @@ def load_reservations():
 
 
 def save_reservations(reservations):
-    """Guardar reservaciones en archivo JSON."""
+    """Escribe las reservaciones en el archivo."""
     try:
         with open(RESERVATIONS_FILE, "w", encoding="utf-8") as f:
             json.dump(reservations, f, indent=4)
@@ -29,10 +29,11 @@ def save_reservations(reservations):
 
 
 class Reservation:
-    """Reservación que vincula un cliente a un hotel."""
+    """Une a un cliente con un hotel en fechas específicas."""
 
-    def __init__(self, reservation_id, customer_id, hotel_id,
-                 check_in, check_out):
+    def __init__(  # pylint: disable=too-many-arguments,too-many-positional-arguments
+            self, reservation_id, customer_id, hotel_id, check_in, check_out):
+        """Datos de la reservación: quién, dónde y cuándo."""
         self.reservation_id = str(reservation_id)
         self.customer_id = str(customer_id)
         self.hotel_id = str(hotel_id)
@@ -40,7 +41,7 @@ class Reservation:
         self.check_out = check_out
 
     def to_dict(self):
-        """Conviertimos la reservación a diccionario."""
+        """Regresa los datos de la reservación como diccionario."""
         return {
             "reservation_id": self.reservation_id,
             "customer_id": self.customer_id,
@@ -51,7 +52,7 @@ class Reservation:
 
     @staticmethod
     def from_dict(data):
-        """CreamosS una Reservación desde un diccionario."""
+        """Arma una Reservation a partir de un diccionario."""
         return Reservation(
             data["reservation_id"],
             data["customer_id"],
@@ -63,7 +64,7 @@ class Reservation:
     @staticmethod
     def create_reservation(reservation_id, customer_id, hotel_id,
                            check_in, check_out):
-        """Crear y guardar una nueva reservación."""
+        """Registra una reservación nueva y ocupa la habitación en el hotel."""
         reservations = load_reservations()
         reservation_id = str(reservation_id)
         if reservation_id in reservations:
@@ -71,7 +72,10 @@ class Reservation:
             return None
         success = Hotel.reserve_room(hotel_id, reservation_id, customer_id)
         if not success:
-            print("No se pudo crear la reservación: habitación no disponible o hotel no encontrado.")
+            print(
+                "No se pudo crear la reservación: "
+                "habitación no disponible o hotel no encontrado."
+            )
             return None
         reservation = Reservation(
             reservation_id, customer_id, hotel_id, check_in, check_out
@@ -83,7 +87,7 @@ class Reservation:
 
     @staticmethod
     def cancel_reservation(reservation_id):
-        """Cancelar una reservación."""
+        """Cancela la reservación y libera la habitación."""
         reservations = load_reservations()
         reservation_id = str(reservation_id)
         if reservation_id not in reservations:
@@ -98,14 +102,14 @@ class Reservation:
 
     @staticmethod
     def display_reservation(reservation_id):
-        """Mostrar información de la reservación."""
+        """Imprime los datos de la reservación en consola."""
         reservations = load_reservations()
         reservation_id = str(reservation_id)
         if reservation_id not in reservations:
             print(f"Reservación {reservation_id} no encontrada.")
             return None
         res = Reservation.from_dict(reservations[reservation_id])
-        print(f"--- Información de la Reservación ---")
+        print("--- Información de la Reservación ---")
         print(f"ID           : {res.reservation_id}")
         print(f"ID Cliente   : {res.customer_id}")
         print(f"ID Hotel     : {res.hotel_id}")
