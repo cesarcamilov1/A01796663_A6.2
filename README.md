@@ -31,8 +31,42 @@
 | &nbsp; | Req 6. Be compliant with PEP8. | &nbsp; | &nbsp; |
 | &nbsp; | Req 7. The source code must show no warnings using Fleak and PyLint. | &nbsp; | &nbsp; |
 
+## Estructura del proyecto
+
+El proyecto está organizado de la siguiente manera:
+
+```text
+A01796663_A6.2/
+├── capturas/
+│   ├── plint-customer.png
+│   ├── plint-hotel.png
+│   ├── plint-Reservation.png
+│   └── plint-test.png
+├── src/
+│   ├── customer.py       # Manejo de clientes
+│   ├── hotel.py          # Manejo de hoteles
+│   └── reservation.py    # Manejo de reservaciones
+├── test/
+│   ├── .pylintrc         # Configuración de pylint para los tests
+│   └── test.py           # Pruebas unitarias
+└── README.md             # Documentación del proyecto
+```
+
+## Pruebas PyLint
+
+Capturas de la ejecución de PyLint en los archivos del proyecto.
+### `customer.py`
+![PyLint Customer](capturas/plint-customer.png)
+
+### `hotel.py`
+![PyLint Hotel](capturas/plint-hotel.png)
+
+### `reservation.py`
+![PyLint Reservation](capturas/plint-Reservation.png)
+
+### `test.py`
+![PyLint Test](capturas/plint-test.png)
+
 ## Actualizaciones Futuras del proyecto:
-* Estructura del proyecto.
 * Verficación de los test.
-* Capturas de los tests realizados.
 * Actualización del archivo README para una mejor documentación.

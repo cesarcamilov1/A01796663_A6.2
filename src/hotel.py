@@ -1,4 +1,4 @@
-"""Módulo de gestión de hoteles para el sistema de reservaciones."""
+"""Manejo de hoteles para el sistema de reservaciones."""
 
 import json
 import os
@@ -7,7 +7,7 @@ HOTELS_FILE = "hotels.json"
 
 
 def load_hotels():
-    """Cargar hoteles desde archivo JSON."""
+    """Lee los hoteles guardados en el archivo."""
     if not os.path.exists(HOTELS_FILE):
         return {}
     try:
@@ -19,7 +19,7 @@ def load_hotels():
 
 
 def save_hotels(hotels):
-    """Guardar hoteles en archivo JSON."""
+    """Escribe los hoteles en el archivo."""
     try:
         with open(HOTELS_FILE, "w", encoding="utf-8") as f:
             json.dump(hotels, f, indent=4)
@@ -28,10 +28,10 @@ def save_hotels(hotels):
 
 
 class Hotel:
-    """Representa un hotel con habitaciones y reservaciones."""
+    """Un hotel con sus habitaciones y reservaciones."""
 
     def __init__(self, hotel_id, name, location, total_rooms):
-        """Inicializa una instancia de Hotel."""
+        """Datos básicos del hotel. Requiere al menos una habitación."""
         if not isinstance(total_rooms, int) or total_rooms <= 0:
             raise ValueError("total_rooms must be a positive integer.")
         self.hotel_id = str(hotel_id)
@@ -41,7 +41,7 @@ class Hotel:
         self.reservations = {}
 
     def to_dict(self):
-        """Convierte el hotel a diccionario."""
+        """Regresa los datos del hotel como diccionario."""
         return {
             "hotel_id": self.hotel_id,
             "name": self.name,
@@ -52,7 +52,7 @@ class Hotel:
 
     @staticmethod
     def from_dict(data):
-        """Crear un Hotel desde un diccionario."""
+        """Arma un Hotel a partir de un diccionario."""
         hotel = Hotel(
             data["hotel_id"],
             data["name"],
@@ -63,12 +63,12 @@ class Hotel:
         return hotel
 
     def available_rooms(self):
-        """Regresa el número de habitaciones disponibles."""
+        """Cuántas habitaciones quedan libres."""
         return self.total_rooms - len(self.reservations)
 
     @staticmethod
     def create_hotel(hotel_id, name, location, total_rooms):
-        """Crear y guardar un nuevo hotel."""
+        """Agrega un hotel nuevo al sistema."""
         hotels = load_hotels()
         hotel_id = str(hotel_id)
         if hotel_id in hotels:
@@ -82,7 +82,7 @@ class Hotel:
 
     @staticmethod
     def delete_hotel(hotel_id):
-        """Eliminar un hotel por ID."""
+        """Borra un hotel del sistema."""
         hotels = load_hotels()
         hotel_id = str(hotel_id)
         if hotel_id not in hotels:
@@ -95,14 +95,14 @@ class Hotel:
 
     @staticmethod
     def display_hotel(hotel_id):
-        """Mostrar información del hotel."""
+        """Imprime los datos del hotel en consola."""
         hotels = load_hotels()
         hotel_id = str(hotel_id)
         if hotel_id not in hotels:
             print(f"Hotel con ID {hotel_id} no encontrado.")
             return None
         hotel = Hotel.from_dict(hotels[hotel_id])
-        print(f"--- Información del Hotel ---")
+        print("--- Información del Hotel ---")
         print(f"ID        : {hotel.hotel_id}")
         print(f"Nombre    : {hotel.name}")
         print(f"Ubicación : {hotel.location}")
@@ -111,7 +111,7 @@ class Hotel:
 
     @staticmethod
     def modify_hotel(hotel_id, name=None, location=None, total_rooms=None):
-        """Modificar información del hotel."""
+        """Actualiza los campos del hotel que se quieran cambiar."""
         hotels = load_hotels()
         hotel_id = str(hotel_id)
         if hotel_id not in hotels:
@@ -132,7 +132,7 @@ class Hotel:
 
     @staticmethod
     def reserve_room(hotel_id, reservation_id, customer_id):
-        """Reservar una habitación en un hotel."""
+        """Ocupa una habitación del hotel con la reservación dada."""
         hotels = load_hotels()
         hotel_id = str(hotel_id)
         if hotel_id not in hotels:
@@ -154,7 +154,7 @@ class Hotel:
 
     @staticmethod
     def cancel_room_reservation(hotel_id, reservation_id):
-        """Cancelar una reservación de habitación en un hotel."""
+        """Libera la habitación asociada a la reservación."""
         hotels = load_hotels()
         hotel_id = str(hotel_id)
         if hotel_id not in hotels:

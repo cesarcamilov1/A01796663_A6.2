@@ -1,4 +1,4 @@
-"""Módulo de gestión de clientes para el sistema de reservaciones."""
+"""Manejo de clientes para el sistema de reservaciones."""
 
 import json
 import os
@@ -7,7 +7,7 @@ CUSTOMERS_FILE = "customers.json"
 
 
 def load_customers():
-    """Cargar clientes desde archivo JSON."""
+    """Lee los clientes guardados en el archivo."""
     if not os.path.exists(CUSTOMERS_FILE):
         return {}
     try:
@@ -19,7 +19,7 @@ def load_customers():
 
 
 def save_customers(customers):
-    """Guardar clientes en archivo JSON."""
+    """Escribe los clientes en el archivo."""
     try:
         with open(CUSTOMERS_FILE, "w", encoding="utf-8") as f:
             json.dump(customers, f, indent=4)
@@ -28,17 +28,17 @@ def save_customers(customers):
 
 
 class Customer:
-    """Representa a un cliente."""
+    """Un cliente del sistema de reservaciones."""
 
     def __init__(self, customer_id, name, email, phone):
-        """Inicializa una instancia de Cliente."""
+        """Datos básicos del cliente."""
         self.customer_id = str(customer_id)
         self.name = name
         self.email = email
         self.phone = phone
 
     def to_dict(self):
-        """Convierte el cliente a diccionario."""
+        """Regresa los datos del cliente como diccionario."""
         return {
             "customer_id": self.customer_id,
             "name": self.name,
@@ -48,7 +48,7 @@ class Customer:
 
     @staticmethod
     def from_dict(data):
-        """Crear un Cliente desde un diccionario."""
+        """Arma un Customer a partir de un diccionario."""
         return Customer(
             data["customer_id"],
             data["name"],
@@ -58,7 +58,7 @@ class Customer:
 
     @staticmethod
     def create_customer(customer_id, name, email, phone):
-        """Crear y guardar un nuevo cliente."""
+        """Agrega un cliente nuevo al sistema."""
         customers = load_customers()
         customer_id = str(customer_id)
         if customer_id in customers:
@@ -72,7 +72,7 @@ class Customer:
 
     @staticmethod
     def delete_customer(customer_id):
-        """Eliminar un cliente por ID."""
+        """Borra un cliente del sistema."""
         customers = load_customers()
         customer_id = str(customer_id)
         if customer_id not in customers:
@@ -85,14 +85,14 @@ class Customer:
 
     @staticmethod
     def display_customer(customer_id):
-        """Mostrar información del cliente."""
+        """Imprime los datos del cliente en consola."""
         customers = load_customers()
         customer_id = str(customer_id)
         if customer_id not in customers:
             print(f"Cliente con ID {customer_id} no encontrado.")
             return None
         customer = Customer.from_dict(customers[customer_id])
-        print(f"--- Información del Cliente ---")
+        print("--- Información del Cliente ---")
         print(f"ID     : {customer.customer_id}")
         print(f"Nombre : {customer.name}")
         print(f"Correo : {customer.email}")
@@ -101,7 +101,7 @@ class Customer:
 
     @staticmethod
     def modify_customer(customer_id, name=None, email=None, phone=None):
-        """Modificar información del cliente."""
+        """Actualiza los campos del cliente que se quieran cambiar."""
         customers = load_customers()
         customer_id = str(customer_id)
         if customer_id not in customers:
