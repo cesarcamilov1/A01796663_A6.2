@@ -31,8 +31,15 @@ def save_reservations(reservations):
 class Reservation:
     """Une a un cliente con un hotel en fechas específicas."""
 
-    def __init__(  # pylint: disable=too-many-arguments,too-many-positional-arguments
-            self, reservation_id, customer_id, hotel_id, check_in, check_out):
+    # pylint: disable=too-many-arguments,too-many-positional-arguments
+    def __init__(
+        self,
+        reservation_id,
+        customer_id,
+        hotel_id,
+        check_in,
+        check_out,
+    ):
         """Datos de la reservación: quién, dónde y cuándo."""
         self.reservation_id = str(reservation_id)
         self.customer_id = str(customer_id)
