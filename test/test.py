@@ -1,14 +1,19 @@
 """Tests para las clases Hotel, Cliente y Reservación."""
 
 import os
+import sys
 import unittest
 
-import customer as customer_module
-import hotel as hotel_module
-import reservation as reservation_module
-from customer import Customer
-from hotel import Hotel
-from reservation import Reservation
+sys.path.insert(
+    0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src')
+)
+
+import customer as customer_module  # noqa: E402
+import hotel as hotel_module  # noqa: E402
+import reservation as reservation_module  # noqa: E402
+from customer import Customer  # noqa: E402
+from hotel import Hotel  # noqa: E402
+from reservation import Reservation  # noqa: E402
 
 
 def cleanup_files():
@@ -137,13 +142,13 @@ class TestHotel(unittest.TestCase):
         self.assertFalse(result)
 
     def test_modify_hotel_invalid_rooms(self):
-        """Verifica que poner habitaciones negativas en modify regresa False."""
+        """Verifica que poner habitaciones negativas regresa False."""
         Hotel.create_hotel("HM1", "Mod Hotel", "City", 5)
         result = Hotel.modify_hotel("HM1", total_rooms=-5)
         self.assertFalse(result)
 
     def test_reserve_room_no_availability(self):
-        """Verifica que no se pueden hacer más reservas que habitaciones hay."""
+        """Verifica que no se pueden hacer más reservas que habitaciones."""
         Hotel.create_hotel("HF1", "Full Hotel", "City", 1)
         Hotel.reserve_room("HF1", "R_A", "C1")
         result = Hotel.reserve_room("HF1", "R_B", "C2")
@@ -155,14 +160,14 @@ class TestHotel(unittest.TestCase):
         self.assertFalse(result)
 
     def test_reserve_room_duplicate_reservation(self):
-        """Verifica que no se puede usar el mismo ID de reservación dos veces."""
+        """Verifica que no se puede usar el mismo ID dos veces."""
         Hotel.create_hotel("HDR", "Dup Res Hotel", "City", 5)
         Hotel.reserve_room("HDR", "RDUP", "C1")
         result = Hotel.reserve_room("HDR", "RDUP", "C2")
         self.assertFalse(result)
 
     def test_cancel_room_reservation_not_found(self):
-        """Verifica que cancelar una reservación que no existe regresa False."""
+        """Verifica que cancelar una reservación inexistente regresa False."""
         Hotel.create_hotel("HC1", "Cancel Hotel", "City", 5)
         result = Hotel.cancel_room_reservation("HC1", "NOTEXIST")
         self.assertFalse(result)
@@ -300,19 +305,25 @@ class TestReservation(unittest.TestCase):
 
     def test_create_reservation_success(self):
         """Verifica que se puede crear una reservación sin problemas."""
-        r = Reservation.create_reservation("R1", "C1", "H1", "2025-01-01", "2025-01-05")
+        r = Reservation.create_reservation(
+            "R1", "C1", "H1", "2025-01-01", "2025-01-05"
+        )
         self.assertIsNotNone(r)
         self.assertEqual(r.customer_id, "C1")
 
     def test_cancel_reservation_success(self):
         """Verifica que se puede cancelar una reservación existente."""
-        Reservation.create_reservation("R2", "C1", "H1", "2025-02-01", "2025-02-05")
+        Reservation.create_reservation(
+            "R2", "C1", "H1", "2025-02-01", "2025-02-05"
+        )
         result = Reservation.cancel_reservation("R2")
         self.assertTrue(result)
 
     def test_display_reservation_success(self):
-        """Verifica que se muestran los datos de una reservación correctamente."""
-        Reservation.create_reservation("R3", "C1", "H1", "2025-03-01", "2025-03-05")
+        """Verifica que se muestran los datos de una reservación."""
+        Reservation.create_reservation(
+            "R3", "C1", "H1", "2025-03-01", "2025-03-05"
+        )
         r = Reservation.display_reservation("R3")
         self.assertIsNotNone(r)
         self.assertEqual(r.hotel_id, "H1")
@@ -338,7 +349,9 @@ class TestReservation(unittest.TestCase):
     def test_cancel_reservation_restores_room(self):
         """Verifica que al cancelar se libera la habitación del hotel."""
         Hotel.create_hotel("H_SM", "Small Hotel", "City", 1)
-        Reservation.create_reservation("R_SM", "C1", "H_SM", "2025-06-01", "2025-06-03")
+        Reservation.create_reservation(
+            "R_SM", "C1", "H_SM", "2025-06-01", "2025-06-03"
+        )
         Reservation.cancel_reservation("R_SM")
         h = Hotel.display_hotel("H_SM")
         self.assertEqual(h.available_rooms(), 1)
@@ -346,8 +359,10 @@ class TestReservation(unittest.TestCase):
     # --- Pruebas negativas ---
 
     def test_create_reservation_duplicate(self):
-        """Verifica que no se puede usar el mismo ID de reservación dos veces."""
-        Reservation.create_reservation("R_DUP", "C1", "H1", "2025-07-01", "2025-07-05")
+        """Verifica que no se puede usar el mismo ID dos veces."""
+        Reservation.create_reservation(
+            "R_DUP", "C1", "H1", "2025-07-01", "2025-07-05"
+        )
         result = Reservation.create_reservation(
             "R_DUP", "C1", "H1", "2025-07-01", "2025-07-05"
         )

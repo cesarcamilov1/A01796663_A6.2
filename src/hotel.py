@@ -106,7 +106,10 @@ class Hotel:
         print(f"ID        : {hotel.hotel_id}")
         print(f"Nombre    : {hotel.name}")
         print(f"Ubicación : {hotel.location}")
-        print(f"Habitaciones: {hotel.total_rooms} total, {hotel.available_rooms()} disponibles")
+        print(
+            f"Habitaciones: {hotel.total_rooms} total, "
+            f"{hotel.available_rooms()} disponibles"
+        )
         return hotel
 
     @staticmethod
@@ -162,9 +165,15 @@ class Hotel:
             return False
         reservation_id = str(reservation_id)
         if reservation_id not in hotels[hotel_id]["reservations"]:
-            print(f"Reservación {reservation_id} no encontrada en el hotel {hotel_id}.")
+            print(
+                f"Reservación {reservation_id} no encontrada "
+                f"en el hotel {hotel_id}."
+            )
             return False
         del hotels[hotel_id]["reservations"][reservation_id]
         save_hotels(hotels)
-        print(f"Reservación {reservation_id} cancelada en el hotel {hotel_id}.")
+        print(
+            f"Reservación {reservation_id} cancelada "
+            f"en el hotel {hotel_id}."
+        )
         return True
